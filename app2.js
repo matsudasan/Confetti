@@ -30,11 +30,13 @@
                     this.x += Random(-5, 5)
                     if (this.y > animation.clientHeight || this.x > animation.clientWidth) {
                         this.item.remove()
+                        this.item=null
+                    }else{
+                        this.item.style.top = `${this.y}px`
+                        this.item.style.left = `${this.x}px`
+                        this.rorate = (this.rorate + 5) % 360
+                        this.item.style.transform = `rotate3d(${this.xr},${this.yr},${this.zr},${this.rorate}deg)`
                     }
-                    this.item.style.top = `${this.y}px`
-                    this.item.style.left = `${this.x}px`
-                    this.rorate = (this.rorate + 5) % 360
-                    this.item.style.transform = `rotate3d(${this.xr},${this.yr},${this.zr},${this.rorate}deg)`
                 }
             }
             papers.push(paper)
@@ -55,6 +57,9 @@
     const Move = () => {
         for (let i = 0; i < papers.length; i++) {
             papers[i].update()
+            if(!papers[i].item){
+                papers.splice(i,1)
+            }
         }
         requestAnimationFrame(Move)
     }
